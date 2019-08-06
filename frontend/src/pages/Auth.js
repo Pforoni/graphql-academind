@@ -68,9 +68,7 @@ class AuthPage extends Component {
                 return res.json();
             })
             .then(resData => {
-                debugger
                 if (resData.data.login.token) {
-                    debugger
                     this.context.login(
                         resData.data.login.token,
                         resData.data.login.userId,
