@@ -9,6 +9,7 @@ module.exports = {
         }
         try {
             const bookings = await Booking.find({user: req.userId});
+
             return bookings.map(booking => {
                 return transformBooking(booking);
             })
@@ -23,7 +24,7 @@ module.exports = {
         }
         const fetchedEvent = await Event.findOne({ _id: args.eventId });
         const booking = new Booking({
-            user: req.UserId,
+            user: req.userId,
             event: fetchedEvent
         });
         const result = await booking.save();

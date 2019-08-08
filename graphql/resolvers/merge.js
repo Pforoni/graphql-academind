@@ -1,6 +1,16 @@
+const DataLoader = require('dataloader');
+
 const Event = require('../../models/event');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
+
+const eventLoader = new DataLoader(eventIds => {
+    return events(eventIds);
+});
+
+const userLoader = new DataLoader(userIds => {
+    return User.find({_id: {$in: userIds}});
+});
 
 //entender qual a diferença das funções 'events' e 'singleEvent'
 const events = async eventIds => {
@@ -17,8 +27,8 @@ const events = async eventIds => {
 
 const singleEvent = async eventId => {
     try {
-        const event = await Event.findById(eventId);
-        return transformEvent(event);
+        const event = await eventLoader.load(eventId.toString());
+        return event;//transformEvent(event);
     } catch (err) {
         throw err;
     }
@@ -26,11 +36,11 @@ const singleEvent = async eventId => {
 
 const user = async userId => {
     try {
-        const user = await User.findById(userId)
+        const user = await userLoader.load(userId.toString());
         return {
             ...user._doc,
             _id: user.id,
-            createdEvents: events.bind(this, user._doc.createdEvents)
+            createdEvents: eventLoader.load.bind(this, user._doc.createdEvents)
         };
     }
     catch (err) {
@@ -49,6 +59,7 @@ const transformEvent = event =>{
 
 
 const transformBooking = booking => {
+    console.log("transformBooking: ", ...booking._doc)
     return {
         ...booking._doc,
         _id: booking.id,
