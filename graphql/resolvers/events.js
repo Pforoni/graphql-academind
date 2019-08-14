@@ -6,7 +6,7 @@ const { dateToString } = require('../../helpers/date');
 module.exports = {
     events: async () => {
         try {
-            const events = await Event.find()
+            const events = await Event.find();
             return events.map(event => {
                 return transformEvent(event);
             })
@@ -38,7 +38,7 @@ module.exports = {
                 throw new Error('User not found.');
             }
             creator.createdEvents.push(event);
-            const userSaveResult = await creator.save();
+            await creator.save();
 
             return createdEvent;
         }

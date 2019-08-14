@@ -17,7 +17,7 @@ const events = async eventIds => {
     try {
         const events = await Event.find({ _id: { $in: eventIds } })
         return events.map(event => {
-            transformEvent(event);
+            return transformEvent(event);
         });
     }
     catch (err) {
@@ -40,7 +40,7 @@ const user = async userId => {
         return {
             ...user._doc,
             _id: user.id,
-            createdEvents: eventLoader.load.bind(this, user._doc.createdEvents)
+            createdEvents: () => eventLoader.loadMany(user._doc.createdEvents)
         };
     }
     catch (err) {
