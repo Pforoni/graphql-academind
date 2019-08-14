@@ -55,11 +55,9 @@ const transformEvent = event =>{
         date: dateToString(event._doc.date),
         creator: user.bind(this, event.creator)
     };
-}
-
+};
 
 const transformBooking = booking => {
-    console.log("transformBooking: ", ...booking._doc)
     return {
         ...booking._doc,
         _id: booking.id,
@@ -68,7 +66,7 @@ const transformBooking = booking => {
         createdAt: dateToString(booking._doc.createdAt),
         updatedAt: dateToString(booking._doc.updatedAt)
     };
-}
+};
 
 exports.transformEvent = transformEvent;
 exports.transformBooking = transformBooking;

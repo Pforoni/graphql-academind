@@ -9,9 +9,8 @@ module.exports = {
             throw new Error('Unauthenticated!');
         }
         try {
-            const query = new ObjectId(req.userId);
-            //const bookings = await Booking.find({ user: new ObjectId(req.userId) });
-            const bookings = await Booking.find({});
+            const bookings = await Booking.find({ user: req.userId });
+            
             return bookings.map(booking => {
                 return transformBooking(booking);
             });
