@@ -15,7 +15,11 @@ const userLoader = new DataLoader(userIds => {
 //entender qual a diferença das funções 'events' e 'singleEvent'
 const events = async eventIds => {
     try {
-        const events = await Event.find({ _id: { $in: eventIds } })
+        const events = await Event.find({ _id: { $in: eventIds } });
+        events.sort((a, b) => {
+            return eventIds.indexOf(a._id.toString()) - eventIds.indexOf(b._id.toString());
+        });
+        
         return events.map(event => {
             return transformEvent(event);
         });
